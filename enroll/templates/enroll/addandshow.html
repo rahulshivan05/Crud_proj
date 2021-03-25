@@ -1,0 +1,66 @@
+{% extends 'enroll/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Add Student
+{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-sm-4">
+		<h2 class="text-center alert alert-info">Add New Student</h2>
+		<form action="" method="POST">
+			{% csrf_token %}
+			{{form|crispy}}<br>
+			<input type="submit" value="Add" class="btn btn-primary">
+		</form>
+	</div>
+	<div class="col-sm-7 offset-1">
+		<h4 class="text-center alert alert-info">Show Student Information</h4>
+		{% if stu %}
+		<table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">ID</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Email</th>
+			      <th scope="col">Password</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	{% for st in stu %}
+			    <tr>
+			      <th scope="row">{{st.id}}</th>
+			      <td>{{st.name}}</td>
+			      <td>{{st.email}}</td>
+			      <td>{{st.password}}</td>
+			      <td>
+			      	<a href="{% url 'update_data' st.id %}" class="btn btn-warning btn-sm">Edit</a>
+			      	<form action="{% url 'delete_data' st.id %}" method="POST" class="d-inline">
+			      		{% csrf_token %}
+			      		<input type="submit" class="btn btn-danger btn-sm" value="Delete">
+			      	</form>
+			      </td>
+			    </tr>
+			    {% endfor %}
+			  </tbody>
+			</table>
+
+		{% else %}
+		<h4 class="text-center alert alert-info">No Record</h4>
+		{% endif %}
+	</div>
+</div>
+<hr>
+<!-- <h2>{{request.headers.user_agent}}</h2><br> -->
+<!-- <h4>{{request.get_host}}</h4><br>
+<p>{{request.is_secure}}</p> -->
+<p class="text-center" name="browser2">You are Using {{browser}} in {{os}}</p>
+<p class="text-center">Your Ip Address is: {{data.ip}} and Country name is <b>{{data.country_name}}</b></p>
+
+
+
+
+{% endblock content %}
